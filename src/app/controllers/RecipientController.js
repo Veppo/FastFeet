@@ -24,12 +24,8 @@ class RecipientController {
     if (recipientExists) {
       return res.status(400).json({ error: 'Recipient already exists.' });
     }
-    const { id, name, street } = await Recipient.create(req.body);
-    return res.json({
-      id,
-      name,
-      street,
-    });
+    const user = await Recipient.create(req.body);
+    return res.json({ user });
   }
 
   async update(req, res) {
@@ -52,13 +48,8 @@ class RecipientController {
       where: { id: req.body.id },
     });
 
-    const { id, name, street } = await recipient.update(req.body);
-
-    return res.json({
-      id,
-      name,
-      street,
-    });
+    const user = await recipient.update(req.body);
+    return res.json({ user });
   }
 
   async list(req, res) {
