@@ -1,5 +1,5 @@
 <h1 align="center">
-  <img alt="Fastfeet" title="Fastfeet" src=".github/logo-gostack.svg" width="300px" />
+  <img alt="Fastfeet" title="Fastfeet" src=".github/GoStack.jpg" width="300px" />
 </h1>
 
 <h3 align="center">
@@ -11,7 +11,7 @@
 <p align="center">
   <a href="#low_brightness-technologies">Technologies</a>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
   <a href="#information_source-how-To-Use">How to Use</a>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
-  <a href="#memo-licença">License</a>
+  <a href="#memo-license">License</a>
 </p>
 
 ## :rocket: Rocketseat - NodeJS Concepts
