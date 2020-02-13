@@ -7,6 +7,7 @@ import {
   setHours,
   parseISO,
 } from 'date-fns';
+import { Op } from 'sequelize';
 import Deliverer from '../models/Deliverer';
 import Recipient from '../models/Recipient';
 import Order from '../models/Order';
@@ -106,6 +107,22 @@ class OrderController {
       return res
         .status(400)
         .json({ error: 'End date can not be before the start date.' });
+    }
+
+    const dailyCount = await Order.count({
+      where: {
+        deliverer_id: order.deliverer_id,
+        start_date: {
+          [Op.between]: [limInit, limEnd],
+        },
+      },
+      group: ['id'],
+    });
+
+    if (dailyCount.length > 4) {
+      return res.status(400).json({
+        error: `The Deliverer already delivered 5 orders that day.`,
+      });
     }
 
     const { id, product } = await order.update(req.body);
