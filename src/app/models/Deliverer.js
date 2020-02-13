@@ -1,7 +1,6 @@
 import Sequelize, { Model } from 'sequelize';
 
 class Deliverer extends Model {
-  // TODO Set the Adress as another entity
   static init(sequelize) {
     super.init(
       {
