@@ -16,7 +16,7 @@
 
 ## :rocket: Rocketseat - NodeJS Concepts
 
-This project was developed at the [RocketSeat GoStack Bootcamp](https://rocketseat.com.br/bootcamp). Created according to the [Challenge rules](https://github.com/Rocketseat/bootcamp-gostack-desafio-02/blob/master/README.md#desafio-02-iniciando-aplica%C3%A7%C3%A3o).
+This project was developed at the [RocketSeat GoStack Bootcamp](https://rocketseat.com.br/bootcamp). Created according to the [Challenge 01 rules](https://github.com/Rocketseat/bootcamp-gostack-desafio-02/blob/master/README.md#desafio-02-iniciando-aplica%C3%A7%C3%A3o) and [Challenge 02 rules](https://github.com/Rocketseat/bootcamp-gostack-desafio-03/blob/master/README.md#desafio-03-continuando-aplica%C3%A7%C3%A3o).
 
 ## :low_brightness: Technologies
 
@@ -29,6 +29,9 @@ This project was developed with the following technologies:
 -  [Sucrase][sucrase]: it allows super-fast development builds.
 -  [Yup][yup]: is a schema validator and object parser.
 -  [JWT][jwt]: is an open standard (RFC 7519) that defines a compact and self-contained way for securely transmitting information between parties as a JSON object.
+-  [Multer][multer]: is a middleware for handling multipart/form-data , which is primarily used for uploading files.
+-  [date-fns][date-fns]: is a simple toolset for manipulating JavaScript dates in a browser & Node.js.
+-  [dotenv][dotenv]: is the tool used to orchestrate the environment variables of a project.
 -  [VS Code][vc] with [EditorConfig][vceditconfig], [ESLint][vceslint] and [Prettier][prettier]
 
 ## :information_source: How To Use
@@ -64,3 +67,6 @@ This project is under the MIT license. See the [LICENSE](https://github.com/Vepp
 [sucrase]: https://sucrase.io/
 [yup]: https://github.com/jquense/yup
 [jwt]: https://jwt.io/
+[multer]: https://github.com/expressjs/multer
+[date-fns]: https://date-fns.org/
+[dotenv]: https://www.npmjs.com/package/dotenv
