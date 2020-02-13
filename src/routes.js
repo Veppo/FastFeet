@@ -9,6 +9,8 @@ import FileController from './app/controllers/FileController';
 
 import authMiddleware from './app/middlewares/auth';
 import OrderController from './app/controllers/OrderController';
+import StatusController from './app/controllers/StatusController';
+import HistoryController from './app/controllers/HistoryController';
 
 const routes = new Router();
 const upload = multer(multerConfig);
@@ -22,6 +24,8 @@ routes.post('/recipients', RecipientController.store);
 routes.put('/recipients', RecipientController.update);
 
 routes.get('/deliverers', DelivererController.index);
+routes.get('/deliverers/:delivererId/deliveries', StatusController.index);
+routes.get('/deliverers/:delivererId/history', HistoryController.index);
 routes.post('/deliverers', DelivererController.store);
 routes.put('/deliverers', DelivererController.update);
 routes.delete('/deliverers/:id', DelivererController.delete);
