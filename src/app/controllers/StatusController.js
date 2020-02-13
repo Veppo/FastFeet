@@ -1,13 +1,13 @@
 import Deliverer from '../models/Deliverer';
 import Recipient from '../models/Recipient';
-import Order from '../models/Order';
+import Delivery from '../models/Delivery';
 import File from '../models/File';
 
 class StatusController {
   async index(req, res) {
     const { delivererId } = req.params;
 
-    const orders = await Order.findAll({
+    const deliveries = await Delivery.findAll({
       where: {
         deliverer_id: delivererId,
         canceled_at: null,
@@ -33,7 +33,7 @@ class StatusController {
         },
       ],
     });
-    return res.json(orders);
+    return res.json(deliveries);
   }
 }
 

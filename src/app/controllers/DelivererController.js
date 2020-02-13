@@ -37,6 +37,9 @@ class DelivererController {
       return res.status(400).json({ error: 'Validation failed.' });
     }
 
+    /**
+     * Validate E-mail
+     */
     const delivererExists = await Deliverer.findOne({
       where: { email: req.body.email },
     });
@@ -65,6 +68,9 @@ class DelivererController {
 
     const deliverer = await Deliverer.findByPk(req.body.id);
 
+    /**
+     * Validate E-mail
+     */
     if (deliverer.email !== req.body.email) {
       const delivererExists = await Deliverer.findOne({
         where: { email: req.body.email },
@@ -91,6 +97,9 @@ class DelivererController {
   async delete(req, res) {
     const deliverer = await Deliverer.findByPk(req.params.id);
 
+    /**
+     * Validate if it's already deleted
+     */
     if (!deliverer.active) {
       return res.status(400).json({
         error: `The Deliverer is already inactive`,

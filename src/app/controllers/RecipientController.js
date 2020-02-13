@@ -17,13 +17,6 @@ class RecipientController {
       return res.status(400).json({ error: 'Validation failed.' });
     }
 
-    const recipientExists = await Recipient.findOne({
-      where: { name: req.body.name },
-    });
-
-    if (recipientExists) {
-      return res.status(400).json({ error: 'Recipient already exists.' });
-    }
     const user = await Recipient.create(req.body);
     return res.json({ user });
   }
