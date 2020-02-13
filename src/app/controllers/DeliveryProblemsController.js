@@ -6,9 +6,7 @@ class DeliveryProblemsController {
   async index(req, res) {
     const { deliveryId } = req.params;
 
-    let problemsQuery = DeliveryProblems.find({
-      delivery_id: deliveryId,
-    }).sort({ createdAt: 'desc' });
+    let problemsQuery = DeliveryProblems.find().sort({ createdAt: 'desc' });
 
     if (deliveryId) {
       problemsQuery = problemsQuery.where(`delivery_id`).equals(deliveryId);
