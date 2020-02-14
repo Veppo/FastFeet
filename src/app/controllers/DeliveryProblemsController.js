@@ -29,6 +29,23 @@ class DeliveryProblemsController {
 
     return res.json(problem);
   }
+
+  async delete(req, res) {
+    const { problemId } = req.params;
+
+    const problem = await DeliveryProblems.findById(problemId);
+    const delivery = await Delivery.findByPk(problem.delivery_id);
+
+    delivery.canceled_at = new Date();
+    const { id, product, canceled_at } = await delivery.save();
+
+    return res.json({
+      id,
+      product,
+      canceled_at,
+      description: problem.description,
+    });
+  }
 }
 
 export default new DeliveryProblemsController();
