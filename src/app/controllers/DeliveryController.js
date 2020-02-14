@@ -8,7 +8,7 @@ import {
   parseISO,
 } from 'date-fns';
 import { Op } from 'sequelize';
-import Deliverer from '../models/Deliverer';
+import Deliveryman from '../models/Deliveryman';
 import Recipient from '../models/Recipient';
 import Delivery from '../models/Delivery';
 import File from '../models/File';
@@ -32,8 +32,8 @@ class DeliveryController {
           attributes: ['url', 'id', 'path'],
         },
         {
-          model: Deliverer,
-          as: 'deliverer',
+          model: Deliveryman,
+          as: 'deliveryman',
           attributes: ['id', 'name', 'email'],
         },
         {
@@ -49,7 +49,7 @@ class DeliveryController {
   async store(req, res) {
     const schema = Yup.object().shape({
       product: Yup.string().required(),
-      deliverer_id: Yup.string().required(),
+      deliveryman_id: Yup.string().required(),
       recipient_id: Yup.string().required(),
     });
 
@@ -58,11 +58,11 @@ class DeliveryController {
     }
 
     /**
-     * Validate Deliverer
+     * Validate Deliveryman
      */
-    const deliverer = await Deliverer.findByPk(req.body.deliverer_id);
-    if (!deliverer || !deliverer.active) {
-      return res.status(400).json({ error: 'The Deliverer is not Valid.' });
+    const deliveryman = await Deliveryman.findByPk(req.body.deliveryman_id);
+    if (!deliveryman || !deliveryman.active) {
+      return res.status(400).json({ error: 'The Deliveryman is not Valid.' });
     }
 
     /**
@@ -132,7 +132,7 @@ class DeliveryController {
      */
     const dailyCount = await Delivery.count({
       where: {
-        deliverer_id: delivery.deliverer_id,
+        deliveryman_id: delivery.deliveryman_id,
         start_date: {
           [Op.between]: [limInit, limEnd],
         },

@@ -18,15 +18,15 @@ module.exports = {
           as: 'recipient',
         },
       },
-      deliverer_id: {
+      deliveryman_id: {
         type: Sequelize.INTEGER,
         allowNull: true,
         onUpdate: 'CASCADE',
         onDelete: 'SET NULL',
         references: {
-          model: 'deliverers',
+          model: 'deliverymans',
           key: 'id',
-          as: 'deliverer',
+          as: 'deliveryman',
         },
       },
       signature_id: {

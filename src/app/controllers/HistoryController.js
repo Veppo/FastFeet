@@ -1,16 +1,16 @@
 import { Op } from 'sequelize';
-import Deliverer from '../models/Deliverer';
+import Deliveryman from '../models/Deliveryman';
 import Recipient from '../models/Recipient';
 import Delivery from '../models/Delivery';
 import File from '../models/File';
 
 class StatusController {
   async index(req, res) {
-    const { delivererId } = req.params;
+    const { deliverymanId } = req.params;
 
     const deliveries = await Delivery.findAll({
       where: {
-        deliverer_id: delivererId,
+        deliveryman_id: deliverymanId,
         canceled_at: null,
         end_date: {
           [Op.ne]: null,
@@ -25,8 +25,8 @@ class StatusController {
           attributes: ['url', 'id', 'path'],
         },
         {
-          model: Deliverer,
-          as: 'deliverer',
+          model: Deliveryman,
+          as: 'deliveryman',
           attributes: ['id', 'name', 'email'],
         },
         {

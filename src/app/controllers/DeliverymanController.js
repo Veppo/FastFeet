@@ -1,12 +1,12 @@
 import * as Yup from 'yup';
-import Deliverer from '../models/Deliverer';
+import Deliveryman from '../models/Deliveryman';
 import File from '../models/File';
 
-class DelivererController {
+class DeliverymanController {
   async index(req, res) {
     const { page = 1 } = req.query;
 
-    const deliverers = await Deliverer.findAll({
+    const delivereymen = await Deliveryman.findAll({
       where: {
         active: true,
       },
@@ -22,7 +22,7 @@ class DelivererController {
         },
       ],
     });
-    return res.json(deliverers);
+    return res.json(delivereymen);
   }
 
   async store(req, res) {
@@ -40,17 +40,17 @@ class DelivererController {
     /**
      * Validate E-mail
      */
-    const delivererExists = await Deliverer.findOne({
+    const deliverymanExists = await Deliveryman.findOne({
       where: { email: req.body.email },
     });
 
-    if (delivererExists) {
+    if (deliverymanExists) {
       return res.status(400).json({
-        error: `Deliverer with email ${req.body.email} already exists.`,
+        error: `Deliveryman with email ${req.body.email} already exists.`,
       });
     }
 
-    const { id, name, email } = await Deliverer.create(req.body);
+    const { id, name, email } = await Deliveryman.create(req.body);
 
     return res.json({ id, name, email });
   }
@@ -66,51 +66,60 @@ class DelivererController {
       return res.status(400).json({ error: 'Validation failed.' });
     }
 
-    const deliverer = await Deliverer.findByPk(req.body.id);
+    const deliveryman = await Deliveryman.findByPk(req.body.id);
 
     /**
      * Validate E-mail
      */
-    if (deliverer.email !== req.body.email) {
-      const delivererExists = await Deliverer.findOne({
+    if (req.body.email && deliveryman.email !== req.body.email) {
+      const delivererExists = await Deliveryman.findOne({
         where: { email: req.body.email },
       });
 
       if (delivererExists) {
         return res.status(400).json({
-          error: `Deliverer with email ${req.body.email} already exists.`,
+          error: `Deliveryman with email ${req.body.email} already exists.`,
         });
       }
     }
 
-    if (!deliverer.active) {
+    if (!deliveryman.active) {
       return res
         .status(400)
-        .json({ error: 'An inactive deliverer cannot be edited.' });
+        .json({ error: 'An inactive deliveryman cannot be edited.' });
     }
 
-    const { id, name, email } = await deliverer.update(req.body);
+    const { id, name, email } = await deliveryman.update(req.body);
 
     return res.json({ id, name, email });
   }
 
   async delete(req, res) {
-    const deliverer = await Deliverer.findByPk(req.params.id);
+    const deliveryman = await Deliveryman.findByPk(req.params.id);
+
+    /**
+     * Validate deliveryman
+     */
+    if (!deliveryman) {
+      return res.status(400).json({
+        error: `Invalid Deliveryman`,
+      });
+    }
 
     /**
      * Validate if it's already deleted
      */
-    if (!deliverer.active) {
+    if (!deliveryman.active) {
       return res.status(400).json({
-        error: `The Deliverer is already inactive`,
+        error: `The Deliveryman is already inactive`,
       });
     }
 
-    deliverer.active = false;
-    const { id, name, email, active } = await deliverer.save();
+    deliveryman.active = false;
+    const { id, name, email, active } = await deliveryman.save();
 
     return res.json({ id, name, email, active });
   }
 }
 
-export default new DelivererController();
+export default new DeliverymanController();
