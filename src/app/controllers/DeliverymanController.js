@@ -6,7 +6,7 @@ class DeliverymanController {
   async index(req, res) {
     const { page = 1 } = req.query;
 
-    const delivereymen = await Deliveryman.findAll({
+    const delivereymen = await Deliveryman.finddAll({
       where: {
         active: true,
       },
