@@ -1,6 +1,9 @@
 import DeliveryProblems from '../schemas/DeliveryProblems';
-
 import Delivery from '../models/Delivery';
+import Deliveryman from '../models/Deliveryman';
+import Recipient from '../models/Recipient';
+import CancellationMail from '../jobs/CancellationMail';
+import Queue from '../../lib/Queue';
 
 class DeliveryProblemsController {
   async index(req, res) {
@@ -13,7 +16,6 @@ class DeliveryProblemsController {
     }
 
     const problems = await problemsQuery.exec();
-
     return res.json(problems);
   }
 
@@ -34,10 +36,34 @@ class DeliveryProblemsController {
     const { problemId } = req.params;
 
     const problem = await DeliveryProblems.findById(problemId);
-    const delivery = await Delivery.findByPk(problem.delivery_id);
+    const delivery = await Delivery.findByPk(problem.delivery_id, {
+      include: [
+        {
+          model: Deliveryman,
+          as: 'deliveryman',
+          attributes: ['name', 'email'],
+        },
+        {
+          model: Recipient,
+          as: 'recipient',
+          attributes: ['name'],
+        },
+      ],
+    });
+
+    if (delivery.canceled_at) {
+      return res.status(400).json({
+        error: `The Delivery is already canceled`,
+      });
+    }
 
     delivery.canceled_at = new Date();
     const { id, product, canceled_at } = await delivery.save();
+
+    await Queue.add(CancellationMail.key, {
+      delivery,
+      problem,
+    });
 
     return res.json({
       id,

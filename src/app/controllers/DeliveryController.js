@@ -13,6 +13,9 @@ import Recipient from '../models/Recipient';
 import Delivery from '../models/Delivery';
 import File from '../models/File';
 
+import CancellationMail from '../jobs/CancellationMail';
+import Queue from '../../lib/Queue';
+
 class DeliveryController {
   async index(req, res) {
     const { page = 1 } = req.query;
@@ -152,9 +155,22 @@ class DeliveryController {
   }
 
   async delete(req, res) {
-    const delivery = await Delivery.findByPk(req.params.id);
+    const delivery = await Delivery.findByPk(req.params.id, {
+      include: [
+        {
+          model: Deliveryman,
+          as: 'deliveryman',
+          attributes: ['name', 'email'],
+        },
+        {
+          model: Recipient,
+          as: 'recipient',
+          attributes: ['name'],
+        },
+      ],
+    });
 
-    if (delivery.canceled_at !== null) {
+    if (delivery.canceled_at) {
       return res.status(400).json({
         error: `The Delivery is already canceled`,
       });
@@ -162,6 +178,10 @@ class DeliveryController {
 
     delivery.canceled_at = new Date();
     const { id, product, canceled_at } = await delivery.save();
+
+    await Queue.add(CancellationMail.key, {
+      delivery,
+    });
 
     return res.json({ id, product, canceled_at });
   }
